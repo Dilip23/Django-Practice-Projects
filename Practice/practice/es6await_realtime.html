@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			function getResponse(url){
+				return new Promise(function(success, failure){
+					var request = new XMLHttpRequest();
+					
+					request.open('GET', url);
+					
+					request.onload = function(){
+						if(request.status == 200){
+							return success(request.response);
+						}else{
+							return failure("Error in processing..!" + request.status);
+						}
+					}
+					request.onerror = function(){
+						return failure("Error in processing");
+					}
+					request.send();
+				});
+			}
+			
+			function getUsername(response){
+				response = JSON.parse(response);
+				return response["login"];
+			}
+			
+			function makeUsernameCaps(name){
+				return new Promise(function(success, failure){
+					setTimeout(function(){
+						success(name.toUpperCase());
+					}, 3000)
+				});
+			}
+			
+			async function apiCall(url){
+				let response = await getResponse(url);
+				
+				let username = await getUsername(response);
+				
+				let username_in_caps = await makeUsernameCaps(username);
+				
+				return username_in_caps;
+			}
+			
+			apiCall("https://api.github.com/users/dilip23")
+			.then(function(x){
+				console.log(x);
+			})
+			.catch(function(x){
+				console.log("Error - "+x);
+			});
+			
+			
+		</script>
+	</head>
+</html>

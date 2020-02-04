@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			function getResponse(){
+				return new Promise(function(resolve, reject){
+					setTimeout(function(){
+						resolve("Response from API. Executed after 5 secs.");
+					}, 5000);
+				});
+			}
+			
+			async function hello(){
+				let response = await getResponse();
+				return response;
+			}
+			
+			hello()
+			.then(function(x){
+				console.log(x);
+			})
+			.catch(function(x){
+				console.log(x);
+			});
+			console.log("I'm executed before getResponse()");
+		</script>
+	</head>
+</html>
